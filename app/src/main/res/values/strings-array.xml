@@ -2,7 +2,7 @@
 <resources>
     <string-array name="cipherType">
         <item>Caesar shift</item>
-        <item>Atbash</item>
+        <item>Substituion</item>
     </string-array>
 
 
