@@ -45,4 +45,41 @@ abstract class CiphersHolder {
         }
 
     }
+/*
+    object Morse{
+
+        val chars = mapOf('a' to ".-", 'b' to "-..." ,'c' to "-.-." , 'd' to "-..", 'e' to "." , 'f' to "..-." , 'g' to "--." , 'h' to "....",'i' to "..",
+                'j' to ".---", 'k' to "-.-" , 'l' to ".-..", 'm' to "--" , 'n' to "-." , 'o' to "---" , 'p' to ".--.", 'q' to "--.-" ,
+                'r' to ".-.", 's' to "...", 't' to "-", 'u' to "..-", 'v' to "...-", 'w' to ".--", 'x' to "-..-", 'y' to "-.--", 'z' to "--..",
+                '1' to ".----", '2' to "..---", '3' to "...--", '4' to "....-", '5' to ".....", '6' to "-....", '7' to "--...", '8' to "---..", '9' to "----.", '0' to "-----",
+                ',' to " --..--" , '.' to " .-.-.-", '?' to " ..--..")
+
+
+        fun encode (valueString:String) : String{
+            val s:CharArray = stringToChar(valueString)
+            return chars.getValue(s.forEach {  },)
+        }
+
+        fun decode(s:String) : String{
+
+        }
+
+        fun stringToChar(s:String):CharArray{
+            return s.toCharArray()
+        }
+
+        fun charToString(c:CharArray):String{
+            return String(c)
+        }
+
+
+        fun <K, V> getKey(hashMap: Map<K, V>, target: V): K {
+            return hashMap.filter { target == it.value }.keys.first()
+        }
+
+        fun <V, K> getValue(map: Map<K, V>, target: V): V {
+            return map.filter { target == it.value }.values.first()
+        }
+    }
+*/
 }
