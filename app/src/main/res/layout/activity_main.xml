@@ -37,7 +37,7 @@
         app:layout_constraintTop_toBottomOf="@+id/keyValue" />
 
     <EditText
-        android:id="@+id/inputText"
+        android:id="@+id/textToEncode"
         style="@android:style/Widget.AutoCompleteTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -45,14 +45,14 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:gravity="top"
-        android:lines="10"
+        android:lines="5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         tools:text="sdsdsdsdsdsdsd" />
 
     <EditText
-        android:id="@+id/ouputText"
+        android:id="@+id/textToDecode"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
@@ -75,7 +75,7 @@
         android:layout_marginEnd="16dp"
         android:text="Encrypt"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputText" />
+        app:layout_constraintTop_toBottomOf="@+id/textToEncode" />
 
     <Button
         android:id="@+id/deCryptButton"
@@ -84,8 +84,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="deCrypt"
-        app:layout_constraintStart_toStartOf="@+id/inputText"
-        app:layout_constraintTop_toBottomOf="@+id/inputText" />
+        app:layout_constraintStart_toStartOf="@+id/textToEncode"
+        app:layout_constraintTop_toBottomOf="@+id/textToEncode" />
 
     <TextView
         android:id="@+id/shiftValue"
@@ -134,7 +134,6 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/plusButton"
-        tools:text="]kYV}(!7P\$n5_0i R:?jOWtF/=-pe'AD@r6%ZXs\&quot;v*N[#wSl9zq2^+g;LoB`aGh{3.HIu4fbK)mU8|dMET><,Qc\\C1yxJ" />
+        app:layout_constraintTop_toBottomOf="@+id/plusButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

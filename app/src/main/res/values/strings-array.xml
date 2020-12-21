@@ -3,6 +3,7 @@
     <string-array name="cipherType">
         <item>Caesar shift</item>
         <item>Substituion</item>
+        <item>Morse Code</item>
     </string-array>
 
 

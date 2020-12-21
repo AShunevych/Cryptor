@@ -2,15 +2,16 @@ package com.ashunevich.cryptor
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import com.ashunevich.cryptor.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
     private  lateinit var binding: ActivityMainBinding
-    private val i = 0
     var generatedKey = CiphersHolder.SubstituionCipher.generateKey();
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,14 +20,18 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
         setSpinner()
-        binding.shiftValue.text = i.toString();
+        binding.shiftValue.text = "0"
 
         binding.deCryptButton.setOnClickListener {
-            useDecodeCipher(binding.cryptList.selectedItem.toString())
+            decodeCipher(binding.cryptList.selectedItem.toString())
+
         }
         binding.cryptButton.setOnClickListener {
-            useEncodeCipher(binding.cryptList.selectedItem.toString())
+            encodeCipher(binding.cryptList.selectedItem.toString())
+
         }
+
+        setFocusChangeListeners()
 
         binding.plusButton.setOnClickListener {plusMinusShift("+")}
         binding.minusButton.setOnClickListener {plusMinusShift("-")}
@@ -34,7 +39,17 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun setSpinnerListeners(){
+    private fun setFocusChangeListeners(){
+        binding.textToEncode.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) Log.d("FOCUS:","textToEncode") else binding.textToEncode.text.clear()
+        }
+        binding.textToDecode.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) Log.d("FOCUS:","textToDecode") else binding.textToDecode.text.clear()
+        }
+    }
+
+
+    private fun setSpinnerListeners(){
             binding.cryptList.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
@@ -42,9 +57,19 @@ class MainActivity : AppCompatActivity() {
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                     textViewAlpha();
+                    clearView()
             }
 
         }
+    }
+
+    private fun clearView(){
+        binding.textToDecode.setText("")
+        binding.textToEncode.setText("")
+    }
+
+    private fun clearTextAndSetNew(editText: EditText) {
+        editText.text.clear()
     }
 
     fun textViewAlpha(){
@@ -63,7 +88,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun setSpinner() {
+    private fun setSpinner() {
         ArrayAdapter.createFromResource(
             this,
             R.array.cipherType,
@@ -74,24 +99,29 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun useEncodeCipher (spinnerText:String)   {
+    private fun encodeCipher (spinnerText:String)   {
         when(spinnerText){
-                    "Caesar shift" ->    binding.ouputText.setText(CiphersHolder.CaesarCipher.encode(binding.inputText.text.toString(),
+                    "Caesar shift" ->    binding.textToDecode.setText(CiphersHolder.CaesarCipher.encode
+                        (binding.textToEncode.text.toString(),
                             binding.shiftValue.text.toString().toInt()))
-                    "Substituion" ->   binding.ouputText.setText(CiphersHolder.SubstituionCipher.encode(binding.inputText.text.toString(),binding.keyValue.text.toString()))
+                    "Substituion" ->   binding.textToDecode.setText(CiphersHolder.SubstituionCipher.encode(binding.textToEncode.text.toString(),binding.keyValue.text.toString()))
+                    "Morse Code" -> binding.textToDecode.setText(CiphersHolder.MorseCipher.encode(binding.textToEncode.text.toString()))
         }
+
     }
 
 
-    fun useDecodeCipher(spinnerText: String){
+    private fun decodeCipher(spinnerText: String){
         when(spinnerText){
-            "Caesar shift" ->    binding.inputText.setText(CiphersHolder.CaesarCipher.decode(binding.ouputText.text.toString(),
+            "Caesar shift" ->    binding.textToEncode.setText(CiphersHolder.CaesarCipher.decode
+                (binding.textToDecode.text.toString(),
                     binding.shiftValue.text.toString().toInt()))
-            "Substituion" ->    binding.inputText.setText(CiphersHolder.SubstituionCipher.decode(binding.ouputText.text.toString(),binding.keyValue.text.toString()))
+            "Substituion" ->    binding.textToEncode.setText(CiphersHolder.SubstituionCipher.decode(binding.textToDecode.text.toString(),binding.keyValue.text.toString()))
         }
+
     }
 
-    fun plusMinusShift(shiftType:String ){
+    private fun plusMinusShift(shiftType:String ){
         val num1 = binding.shiftValue.text.toString().toInt();
         when(shiftType ){
            "+" -> binding.shiftValue.text = (num1+1).toString()
