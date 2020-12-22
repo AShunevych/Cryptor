@@ -6,18 +6,17 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.EditText
 import com.ashunevich.cryptor.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
     private  lateinit var binding: ActivityMainBinding
-    var generatedKey = CiphersHolder.SubstituionCipher.generateKey();
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
+        binding.keyValue.visibility = View.INVISIBLE
         setContentView(view)
         setSpinner()
         binding.shiftValue.text = "0"
@@ -40,24 +39,32 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun setFocusChangeListeners(){
-        binding.textToEncode.setOnFocusChangeListener { view, hasFocus ->
+        binding.textToEncode.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) Log.d("FOCUS:","textToEncode") else binding.textToEncode.text.clear()
         }
-        binding.textToDecode.setOnFocusChangeListener { view, hasFocus ->
+        binding.textToDecode.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) Log.d("FOCUS:","textToDecode") else binding.textToDecode.text.clear()
         }
     }
 
 
     private fun setSpinnerListeners(){
+
             binding.cryptList.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    textViewAlpha();
-                    clearView()
+                val value = binding.cryptList.selectedItem.toString()
+                if(value == "Substitution"){
+                    binding.keyValue.text = CiphersHolder.SubstituionCipher.generateKey()
+                }
+                else {
+                    binding.keyValue.text = resources.getString(R.string.spaceVertical)
+                }
+                uiHandler(binding.cryptList.selectedItem.toString())
+                clearView()
             }
 
         }
@@ -68,24 +75,34 @@ class MainActivity : AppCompatActivity() {
         binding.textToEncode.setText("")
     }
 
-    private fun clearTextAndSetNew(editText: EditText) {
-        editText.text.clear()
-    }
-
-    fun textViewAlpha(){
-        val spinnerValue = binding.cryptList.selectedItem.toString()
-       if (spinnerValue == "Caesar shift"){
-           binding.keyValue.alpha = 0.0F
-           binding.keyValue.text = ""
-           binding.shiftValue.isEnabled=true
-       }
-        if (spinnerValue == "Substituion"){
-            binding.keyValue.alpha = 1.0F
-            binding.keyValue.text = generatedKey
-            binding.shiftValue.isEnabled=false
+    private fun uiHandler(value:String){
+        when(value){
+            "Substitution" ->   viewGone(true)
+            "Morse Code" -> viewGone(true)
+            "Caesar shift"-> viewGone(false)
         }
-
     }
+
+    private fun viewGone (boolean: Boolean){
+        if(boolean){
+           binding.keyValue.visibility = View.VISIBLE
+            binding.plusButton.visibility = View.INVISIBLE
+            binding.minusButton.visibility = View.INVISIBLE
+            binding.shiftValue.visibility = View.INVISIBLE
+            binding.plusButton.isClickable = false
+            binding.minusButton.isClickable = false
+        }
+        else{
+            binding.plusButton.visibility = View.VISIBLE
+            binding.minusButton.visibility = View.VISIBLE
+            binding.shiftValue.visibility = View.VISIBLE
+            binding.keyValue.visibility = View.INVISIBLE
+            binding.plusButton.isClickable = true
+            binding.minusButton.isClickable = true
+        }
+    }
+
+
 
 
     private fun setSpinner() {
@@ -104,7 +121,7 @@ class MainActivity : AppCompatActivity() {
                     "Caesar shift" ->    binding.textToDecode.setText(CiphersHolder.CaesarCipher.encode
                         (binding.textToEncode.text.toString(),
                             binding.shiftValue.text.toString().toInt()))
-                    "Substituion" ->   binding.textToDecode.setText(CiphersHolder.SubstituionCipher.encode(binding.textToEncode.text.toString(),binding.keyValue.text.toString()))
+                    "Substitution" ->   binding.textToDecode.setText(CiphersHolder.SubstituionCipher.encode(binding.textToEncode.text.toString(),binding.keyValue.text.toString()))
                     "Morse Code" -> binding.textToDecode.setText(CiphersHolder.MorseCipher.encode(binding.textToEncode.text.toString()))
         }
 
@@ -116,13 +133,13 @@ class MainActivity : AppCompatActivity() {
             "Caesar shift" ->    binding.textToEncode.setText(CiphersHolder.CaesarCipher.decode
                 (binding.textToDecode.text.toString(),
                     binding.shiftValue.text.toString().toInt()))
-            "Substituion" ->    binding.textToEncode.setText(CiphersHolder.SubstituionCipher.decode(binding.textToDecode.text.toString(),binding.keyValue.text.toString()))
+            "Substitution" ->    binding.textToEncode.setText(CiphersHolder.SubstituionCipher.decode(binding.textToDecode.text.toString(),binding.keyValue.text.toString()))
+            "Morse Code" -> binding.textToEncode.setText(CiphersHolder.MorseCipher.decode(binding.textToDecode.text.toString()))
         }
-
     }
 
     private fun plusMinusShift(shiftType:String ){
-        val num1 = binding.shiftValue.text.toString().toInt();
+        val num1 = binding.shiftValue.text.toString().toInt()
         when(shiftType ){
            "+" -> binding.shiftValue.text = (num1+1).toString()
             "-" -> binding.shiftValue.text = (num1-1).toString()

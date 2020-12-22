@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Cryptor</string>
+    <string name="spaceVertical"> \n </string>
 </resources>

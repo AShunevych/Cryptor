@@ -2,8 +2,8 @@
 <resources>
     <string-array name="cipherType">
         <item>Caesar shift</item>
-        <item>Substituion</item>
-        <item>Morse Code</item>
+        <item>Substitution</item>
+        <item>Morse code</item>
     </string-array>
 
 
