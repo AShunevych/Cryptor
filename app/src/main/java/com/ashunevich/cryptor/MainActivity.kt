@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
         binding.textToDecode.setText("")
         binding.textToEncode.setText("")
     }
-
+    //Control view change when spinner change value
     private fun uiHandler(value:String){
         when(value){
             "Substitution" ->   viewGone(true)
@@ -103,8 +103,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
-
     private fun setSpinner() {
         ArrayAdapter.createFromResource(
             this,
@@ -127,7 +125,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
     private fun decodeCipher(spinnerText: String){
         when(spinnerText){
             "Caesar shift" ->    binding.textToEncode.setText(CiphersHolder.CaesarCipher.decode
@@ -137,7 +134,7 @@ class MainActivity : AppCompatActivity() {
             "Morse Code" -> binding.textToEncode.setText(CiphersHolder.MorseCipher.decode(binding.textToDecode.text.toString()))
         }
     }
-
+    //add plus 1 / minus 1 to key for Caesar Shift
     private fun plusMinusShift(shiftType:String ){
         val num1 = binding.shiftValue.text.toString().toInt()
         when(shiftType ){
