@@ -70,13 +70,13 @@
     <Button
         android:id="@+id/cryptButton"
         style="@style/Widget.AppCompat.Button.Small"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginEnd="16dp"
         android:text="Encrypt"
+        app:layout_constraintBottom_toBottomOf="@+id/deCryptButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textToEncode" />
+        app:layout_constraintTop_toTopOf="@+id/deCryptButton" />
 
     <Button
         android:id="@+id/deCryptButton"

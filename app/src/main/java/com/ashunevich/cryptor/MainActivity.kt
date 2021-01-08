@@ -77,28 +77,29 @@ class MainActivity : AppCompatActivity() {
     //Control view change when spinner change value
     private fun uiHandler(value:String){
         when(value){
-            "Substitution" ->   viewGone(true)
-            "Morse Code" -> viewGone(true)
-            "Caesar shift"-> viewGone(false)
+            "Substitution" ->   viewStatus(false)
+            "Morse" -> viewStatus(false)
+            "Caesar shift"-> viewStatus(true)
         }
     }
 
-    private fun viewGone (boolean: Boolean){
-        if(boolean){
-           binding.keyValue.visibility = View.VISIBLE
-            binding.plusButton.visibility = View.INVISIBLE
-            binding.minusButton.visibility = View.INVISIBLE
-            binding.shiftValue.visibility = View.INVISIBLE
-            binding.plusButton.isClickable = false
-            binding.minusButton.isClickable = false
-        }
-        else{
+
+    private fun viewStatus (boolean: Boolean) {
+
+        if (boolean) {
             binding.plusButton.visibility = View.VISIBLE
             binding.minusButton.visibility = View.VISIBLE
             binding.shiftValue.visibility = View.VISIBLE
             binding.keyValue.visibility = View.INVISIBLE
             binding.plusButton.isClickable = true
             binding.minusButton.isClickable = true
+        } else {
+            binding.keyValue.visibility = View.VISIBLE
+            binding.plusButton.visibility = View.INVISIBLE
+            binding.minusButton.visibility = View.INVISIBLE
+            binding.shiftValue.visibility = View.INVISIBLE
+            binding.plusButton.isClickable = false
+            binding.minusButton.isClickable = false
         }
     }
 
@@ -120,7 +121,7 @@ class MainActivity : AppCompatActivity() {
                         (binding.textToEncode.text.toString(),
                             binding.shiftValue.text.toString().toInt()))
                     "Substitution" ->   binding.textToDecode.setText(CiphersHolder.SubstituionCipher.encode(binding.textToEncode.text.toString(),binding.keyValue.text.toString()))
-                    "Morse Code" -> binding.textToDecode.setText(CiphersHolder.MorseCipher.encode(binding.textToEncode.text.toString()))
+                    "Morse" -> binding.textToDecode.setText(CiphersHolder.MorseCipher.encode(binding.textToEncode.text.toString()))
         }
 
     }
@@ -131,7 +132,7 @@ class MainActivity : AppCompatActivity() {
                 (binding.textToDecode.text.toString(),
                     binding.shiftValue.text.toString().toInt()))
             "Substitution" ->    binding.textToEncode.setText(CiphersHolder.SubstituionCipher.decode(binding.textToDecode.text.toString(),binding.keyValue.text.toString()))
-            "Morse Code" -> binding.textToEncode.setText(CiphersHolder.MorseCipher.decode(binding.textToDecode.text.toString()))
+            "Morse" -> binding.textToEncode.setText(CiphersHolder.MorseCipher.decode(binding.textToDecode.text.toString()))
         }
     }
     //add plus 1 / minus 1 to key for Caesar Shift
