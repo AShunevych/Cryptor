@@ -12,6 +12,7 @@ class MainActivity : AppCompatActivity() {
 
     private  lateinit var binding: ActivityMainBinding
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -20,7 +21,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(view)
         setSpinner()
         binding.shiftValue.text = "0"
-
         binding.deCryptButton.setOnClickListener {
             decodeCipher(binding.cryptList.selectedItem.toString())
 
@@ -49,19 +49,20 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun setSpinnerListeners(){
-
             binding.cryptList.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val value = binding.cryptList.selectedItem.toString()
-                if(value == "Substitution"){
-                    binding.keyValue.text = CiphersHolder.SubstituionCipher.generateKey()
-                }
-                else {
-                    binding.keyValue.text = resources.getString(R.string.spaceVertical)
+                binding.textToDecode.hint = ""
+                when (binding.cryptList.selectedItem.toString()){
+                    "Substitution"->  binding.keyValue.text = CiphersHolder.SubstituionCipher.generateKey()
+                    "Morse"->
+                        binding.textToDecode.hint = "Format : ... --- ... "
+                    else -> {
+                        binding.keyValue.text = resources.getString(R.string.spaceVertical)
+                    }
                 }
                 uiHandler(binding.cryptList.selectedItem.toString())
                 clearView()

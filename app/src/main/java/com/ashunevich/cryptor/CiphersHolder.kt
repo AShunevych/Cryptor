@@ -53,20 +53,11 @@ abstract class CiphersHolder {
     }
 
     object MorseCipher {
-        // will be refactored in future --> to complicated
-        private val chars = hashMapOf(
-            'a' to ".-", 'b' to "-...", 'c' to "-.-.",  'd' to "-..", 'e' to ".", 'f' to "..-.", 'g' to "--.", 'h' to "....", 'i' to "..",
-            'j' to ".---", 'k' to "-.-", 'l' to ".-..", 'm' to "--", 'n' to "-.", 'o' to "---", 'p' to ".--.", 'q' to "--.-", 'r' to ".-.",
-            's' to "...", 't' to "-", 'u' to "..-", 'v' to "...-", 'w' to ".--", 'x' to "-..-", 'y' to "-.--", 'z' to "--..",
-            '0' to ".....", '1' to "-....", '2' to "--...", '3' to "---..", '4' to "----.", '5' to "-----", '6' to ".----", '7' to "..---",
-             '8' to "...--", '9' to "....-", ' ' to " ", ',' to "--..--",  '.' to ".-.-.-", '?' to "..--.."
-        )
-
-        private val alpha = arrayOf("a", "b", "c", "d", "e", "f", "g", "h", "i", "j",
+        private val EnglishAlphabet = arrayOf("a", "b", "c", "d", "e", "f", "g", "h", "i", "j",
                 "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v",
                 "w", "x", "y", "z", "1", "2", "3", "4", "5", "6", "7", "8",
                 "9", "0", "!", ",", "?", ".")
-        private val morse = arrayOf(".-", "-...", "-.-.", "-..", ".", "..-.", "--.",
+        private val MorseAlphabet = arrayOf(".-", "-...", "-.-.", "-..", ".", "..-.", "--.",
                 "....", "..", ".---", "-.-", ".-..", "--", "-.", "---", ".--.",
                 "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-",
                 "-.--", "--..", ".----", "..---", "...--", "....-", ".....",
@@ -74,25 +65,42 @@ abstract class CiphersHolder {
 
 
         fun encode(message: String): String {
-            val spaceAfterEveryChar = message.replace(".".toRegex(), "$0 ") //add space after every 1 (== one dot)
-            return spaceAfterEveryChar.toLowerCase(Locale.ROOT).filter { chars.containsKey(it) }
-                .fold(" ") { acc, ch ->
-                    acc + chars[ch]!!
-                }.toString()
+          return useArray(message.replace(".".toRegex(), "$0 ").toLowerCase(Locale.ROOT),
+                  EnglishAlphabet, MorseAlphabet,false)
         }
+
 
         //Thank you u/bipidiboop for morse decoder algorithm !
         fun decode(message: String): String {
+            return useArray(message, MorseAlphabet, EnglishAlphabet,true)
+        }
+
+
+        //not ideal , should be replaced, need to think and  test
+       private fun useArray(message: String, arrayToEncode: Array<String>, arrayToDecode: Array<String>,decode: Boolean): String {
             var build = ""
             val change: String = message.trim()
-            val words = change.split(" {3}".toRegex()).toTypedArray()
-            for (word in words) {
-                for (letter in word.split(" ".toRegex()).toTypedArray()) {
-                    for (x in morse.indices) {
-                        if (letter == morse[x]) build += alpha[x]
+            if (decode){
+                val words = change.split(" {3}".toRegex()).toTypedArray()
+                for (word in words) {
+                    for (letter in word.split(" ".toRegex()).toTypedArray()) {
+                        for (x in arrayToEncode.indices) {
+                            if (letter == arrayToEncode[x]) build += arrayToDecode[x]
+                        }
                     }
+                    build += " "
                 }
-                build += " "
+            }
+            else{
+                val words = change.split(" ".toRegex()).toTypedArray()
+                for (word in words) {
+                    for (letter in word.split(" ".toRegex()).toTypedArray()) {
+                        for (x in arrayToEncode.indices) {
+                            if (letter == arrayToEncode[x]) build += arrayToDecode[x]
+                        }
+                    }
+                    build += " "
+                }
             }
             return build
         }
